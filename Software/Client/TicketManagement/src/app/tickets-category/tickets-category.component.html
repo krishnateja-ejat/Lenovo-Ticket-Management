@@ -1,0 +1,98 @@
+<div class="container">
+<div class="row" id="alig" >
+        <div class="col-md-4 col-sm-6 col-xs-12 col-lg-2" id="typedevice" >
+        <label >Type</label>
+        <select name="deviceType" class="form-control" [(ngModel)]="deviceType">
+          <option value="Mobile">Mobile</option>
+          <option value="Laptop">Laptop</option>
+        </select>
+        </div>
+      <div class="col-md-6" id="category-select">
+        <label id="category-font">Select Category</label>
+        <ng-select [allowClear]="true"
+                   [items]="categoryList"
+                   [disabled]="disabled"
+                   (data)="refreshValue($event)"
+                   (selected)="selected($event)"
+                   (removed)="removed($event)"
+                   (typed)="typed($event)"
+                   placeholder="No Category selected">
+        </ng-select>
+        <div class="row" id="select-btn">
+        <button type="btn" class="btn btn-danger" (click)="DisplayTable(deviceType,selectedValue)" >Search Tickets</button>
+        </div>
+        </div>
+      <div id="btn-btn">
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+        <button type="btn" class="btn btn-primary" (click)="CreateTicket()" >Create Tickets</button>
+      </div>
+      </div>
+  </div>
+</div>
+<section class="success" >
+  <div class="container">
+    <div class="row">
+    <table class="table table-striped" [mfData]="filterCatagory" #mf="mfDataTable" [mfRowsOnPage]="5">
+      <thead>
+      <tr>
+        <th style="width: 12%">
+          <mfDefaultSorter by="S.No">Ticket Id</mfDefaultSorter>
+        </th>
+        <th style="width: 12%">
+          <mfDefaultSorter by="name">Ticket Name</mfDefaultSorter>
+        </th>
+        <th style="width: 12%">
+          <mfDefaultSorter by="status">Status</mfDefaultSorter>
+        </th>
+        <th style="width: 12%">
+          <mfDefaultSorter by="priority">Prority</mfDefaultSorter>
+        </th>
+        <th style="width: 12%">
+          <mfDefaultSorter by="Actions">Actions</mfDefaultSorter>
+        </th>
+      </tr>
+      </thead>
+      <tbody >
+      <tr *ngFor="let item of this.filterCatagory;let position=index" >
+        <td bgcolor="#6495ed">{{item.Ticket_No}}</td>
+        <td bgcolor="#6495ed">{{item.name}}</td>
+        <td bgcolor="#6495ed">
+          <select name="status" class="selectpicker" [(ngModel)]="item.Status">
+            <option value="Open">Open</option>
+            <option value="Close">Close</option>
+          </select>
+        </td>
+        <td bgcolor="#6495ed">{{item.priority}}</td>
+        <td>
+          <button type="button" class="btn btn-default btn-sm" (click)="view(item.Ticket_No)">
+            <span class="glyphicon glyphicon-eye-open"></span>
+          </button>
+          <button type="button" class="btn btn-default btn-sm" (click)="edit(item.Ticket_No)">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+          <button type="button" class="btn btn-default btn-sm" (click)="delete(position,item.Ticket_No)">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </td>
+
+      </tr>
+      </tbody>
+      <tbody *ngIf="filterCatagory.length==0">
+      <tr>
+        <td colspan="100" class="text-center">
+          <p>No Tickets are Registered!!!</p>
+        </td>
+      </tr>
+      </tbody>
+
+      <tfoot>
+      <tr>
+        <td colspan="4">
+          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+</section>
